@@ -6,12 +6,14 @@ class ProductDetailScreen extends StatefulWidget {
   final Data product;
   final bool isInCart;
   final VoidCallback onAddToCart;
+  final VoidCallback onRemoveFromCart;
 
   const ProductDetailScreen({
     super.key,
     required this.product,
     required this.isInCart,
     required this.onAddToCart,
+    required this.onRemoveFromCart,
   });
 
   @override
@@ -21,6 +23,26 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   // Visual feedback only; cartIds in HomeScreen stays the single source of truth
   late bool added = widget.isInCart;
+
+  void toggleCart() {
+    if (added) {
+      widget.onRemoveFromCart();
+    } else {
+      widget.onAddToCart();
+    }
+    setState(() {
+      added = !added;
+    });
+
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(added ? 'Added to cart' : 'Removed from cart'),
+          duration: const Duration(milliseconds: 1200),
+        ),
+      );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,26 +162,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             width: double.infinity,
             height: 52,
             child: ElevatedButton(
-              onPressed: added
-                  ? null
-                  : () {
-                      widget.onAddToCart();
-                      setState(() {
-                        added = true;
-                      });
-                    },
+              onPressed: toggleCart,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                foregroundColor: Colors.white,
-                disabledBackgroundColor: Colors.grey.shade300,
-                disabledForegroundColor: Colors.grey.shade600,
+                backgroundColor: added ? Colors.white : Colors.black,
+                foregroundColor: added ? Colors.red.shade400 : Colors.white,
                 elevation: 0,
+                side: added
+                    ? BorderSide(color: Colors.red.shade200)
+                    : BorderSide.none,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
                 ),
               ),
               child: Text(
-                added ? 'Added to Cart' : 'Add to Cart',
+                added ? 'Remove from Cart' : 'Add to Cart',
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,

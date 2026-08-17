@@ -85,13 +85,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void openDetail(Data product) {
+    final id = product.id;
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => ProductDetailScreen(
           product: product,
-          isInCart: cartIds.contains(product.id),
+          isInCart: cartIds.contains(id),
           onAddToCart: () => addToCart(product),
+          onRemoveFromCart: () {
+            if (id != null) removeFromCart(id);
+          },
         ),
       ),
     );
