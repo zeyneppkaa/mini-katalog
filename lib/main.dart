@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'views/home_screen.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -20,18 +22,7 @@ class MyApp extends StatelessWidget {
           background: Colors.white,
         ),
       ),
-      home: const Scaffold(
-        body: Center(
-          child: Text(
-            'Mini Katalog',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-        ),
-      ),
+      home: const HomeScreen(),
     );
   }
 }
