@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../components/products_card_tile.dart';
 import '../models/product_model.dart';
 import '../services/api_service.dart';
+import 'cart_screen.dart';
 import 'product_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -62,6 +63,25 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       cartIds.add(id);
     });
+  }
+
+  void removeFromCart(int id) {
+    setState(() {
+      cartIds.remove(id);
+    });
+  }
+
+  void openCart() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CartScreen(
+          allProducts: allProducts,
+          cartIds: cartIds,
+          onRemoveFromCart: removeFromCart,
+        ),
+      ),
+    );
   }
 
   void openDetail(Data product) {
@@ -161,9 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
       clipBehavior: Clip.none,
       children: [
         IconButton(
-          onPressed: () {
-            // TODO(phase-4): open CartScreen with allProducts + cartIds
-          },
+          onPressed: openCart,
           icon: const Icon(Icons.shopping_bag_outlined, color: Colors.black),
         ),
         if (cartIds.isNotEmpty)
