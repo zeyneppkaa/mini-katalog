@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../components/products_card_tile.dart';
 import '../models/product_model.dart';
 import '../services/api_service.dart';
+import 'product_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -53,6 +54,27 @@ class _HomeScreenState extends State<HomeScreen> {
         isLoading = false;
       });
     }
+  }
+
+  void addToCart(Data product) {
+    final id = product.id;
+    if (id == null) return;
+    setState(() {
+      cartIds.add(id);
+    });
+  }
+
+  void openDetail(Data product) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ProductDetailScreen(
+          product: product,
+          isInCart: cartIds.contains(product.id),
+          onAddToCart: () => addToCart(product),
+        ),
+      ),
+    );
   }
 
   List<Data> get filteredProducts {
@@ -252,11 +274,10 @@ class _HomeScreenState extends State<HomeScreen> {
         childAspectRatio: 0.72,
       ),
       itemBuilder: (context, index) {
+        final product = products[index];
         return ProductsCardTile(
-          product: products[index],
-          onTap: () {
-            // TODO(phase-3): push ProductDetailScreen with products[index]
-          },
+          product: product,
+          onTap: () => openDetail(product),
         );
       },
     );
