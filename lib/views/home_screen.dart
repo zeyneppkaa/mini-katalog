@@ -210,38 +210,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // Decorative only, not interactive
   Widget _buildGiftBanner() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: const Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'GIFT STORE',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.5,
-                  ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  'Something for everyone',
-                  style: TextStyle(color: Colors.white70, fontSize: 12),
-                ),
-              ],
-            ),
-          ),
-          Icon(Icons.card_giftcard, color: Colors.white, size: 34),
-        ],
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: Image.asset(
+        'assets/images/online-store-banner.png',
+        width: double.infinity,
+        height: 110,
+        fit: BoxFit.cover,
       ),
     );
   }
